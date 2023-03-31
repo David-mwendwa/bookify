@@ -19,3 +19,16 @@ export const newRoom = async (req, res) => {
     res.status(400).json({ success: false, error: error.message });
   }
 };
+
+// get single room details => /api/rooms/:id
+export const getSingleRoom = async (req, res) => {
+  try {
+    const room = await Room.findById(req.query.id);
+    if (!room) {
+      return res.status(400).json({ success: false, error: 'Room not found' });
+    }
+    res.status(200).json({ success: true, data: room });
+  } catch (error) {
+    res.status(400).json({ success: false, error: error.message });
+  }
+};

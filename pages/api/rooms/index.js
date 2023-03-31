@@ -7,6 +7,7 @@ const handler = nc();
 dbConnect();
 
 handler.get(allRooms);
+
 handler.post(newRoom);
 
 export default handler;

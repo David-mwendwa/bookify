@@ -1,4 +1,4 @@
-import Room from '../models/room';
+const Room = require('../models/room.js');
 
 // get all rooms
 export const allRooms = async (req, res) => {

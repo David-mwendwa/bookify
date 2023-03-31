@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const dbConnect = () => {
   if (mongoose.connection.readyState > 1) return;
@@ -8,4 +8,4 @@ const dbConnect = () => {
     .catch((err) => console.log('Could not connect to mongoDB', err));
 };
 
-export default dbConnect;
+module.exports = dbConnect;

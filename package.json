@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seeder": "node utils/seeder"
   },
   "dependencies": {
+    "chalk": "^4.1.0",
     "mongoose": "^7.0.3",
     "next": "13.2.4",
     "next-connect": "^0.13.0",

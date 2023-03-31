@@ -6,8 +6,9 @@ const roomSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please enter room name'],
       trim: true,
+      unique: true,
     },
-    price: {
+    pricePerNight: {
       type: Number,
       required: [true, 'Please enter room price'],
       default: 0.0,
@@ -101,6 +102,7 @@ const roomSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
+      required: false,
     },
   },
   { timestamps: true }

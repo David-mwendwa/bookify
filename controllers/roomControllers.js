@@ -5,7 +5,7 @@ const catchAsyncErrors = require('../middlewares/catchAsyncErrors.js');
 
 // get all rooms
 export const allRooms = catchAsyncErrors(async (req, res, next) => {
-  let resultsPerPage = 2;
+  let resultsPerPage = 4;
   const roomsCount = await Room.countDocuments();
 
   const apiFeatures = new APIFeatures(Room.find(), req.query).search().filter();

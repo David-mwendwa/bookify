@@ -20,9 +20,16 @@ class APIFeatures {
   filter() {
     const queryCopy = { ...this.queryStr };
     // Remove fields from query i.e location is not a field in the db
-    const removeFields = ['location'];
+    const removeFields = ['location', 'page'];
     removeFields.forEach((el) => delete queryCopy[el]);
     this.query = this.query.find(queryCopy);
+    return this;
+  }
+
+  pagination(resultsPerPage) {
+    const currentPage = Number(this.queryStr.page) || 1;
+    const skip = resultsPerPage * (currentPage - 1);
+    this.query = this.query.limit(resultsPerPage).skip(skip);
     return this;
   }
 }

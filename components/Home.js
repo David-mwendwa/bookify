@@ -46,7 +46,9 @@ const Home = () => {
         </Link>
         <div className='row'>
           {rooms.length === 0 ? (
-            <div className='alert-alert-info'>No Rooms</div>
+            <div className='alert alert-info w-100 text-center'>
+              No Rooms Found
+            </div>
           ) : (
             rooms.map((room) => <RoomItem key={room._id} room={room} />)
           )}

@@ -1,10 +1,11 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { HYDRATE, createWrapper } from 'next-redux-wrapper';
 import thunk from 'redux-thunk';
-import { allRoomsReducer } from './reducers/roomReducers';
+import { allRoomsReducer, roomDetailsReducer } from './reducers/roomReducers';
 
 const reducers = combineReducers({
   allRooms: allRoomsReducer,
+  roomDetails: roomDetailsReducer,
 });
 
 const bindMiddleware = (middleware) => {

@@ -1,8 +1,11 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { HYDRATE, createWrapper } from 'next-redux-wrapper';
 import thunk from 'redux-thunk';
+import { allRoomsReducer } from './reducers/roomReducers';
 
-const reducers = combineReducers({});
+const reducers = combineReducers({
+  allRooms: allRoomsReducer,
+});
 
 const bindMiddleware = (middleware) => {
   if (process.env.NODE_ENV !== 'production') {

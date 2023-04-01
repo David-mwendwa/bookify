@@ -21,14 +21,14 @@ export const allRooms = catchAsyncErrors(async (req, res, next) => {
     roomsCount,
     resultsPerPage,
     filteredRoomsCount,
-    data: rooms,
+    rooms,
   });
 });
 
 // create new room => /api/rooms
 export const newRoom = catchAsyncErrors(async (req, res) => {
   const room = await Room.create(req.body);
-  res.status(200).json({ success: true, data: room });
+  res.status(200).json({ success: true, room });
 });
 
 // get single room details => /api/rooms/:id
@@ -37,7 +37,7 @@ export const getSingleRoom = catchAsyncErrors(async (req, res, next) => {
   if (!room) {
     return next(new ErrorHandler('Room not found', 404));
   }
-  res.status(200).json({ success: true, data: room });
+  res.status(200).json({ success: true, room });
 });
 
 // update room details => /api/rooms/:id
@@ -51,7 +51,7 @@ export const updateRoom = catchAsyncErrors(async (req, res, next) => {
     runValidators: true,
     useFindAndModify: false,
   });
-  res.status(200).json({ success: true, data: room });
+  res.status(200).json({ success: true, room });
 });
 
 // delete room => /api/rooms/:id

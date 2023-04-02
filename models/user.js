@@ -15,20 +15,23 @@ const userSchema = new mongoose.Schema(
       unique: true,
       validate: [validator.isEmail, 'Please enter a valid email address'],
     },
-    name: {
+    password: {
       type: String,
       required: [true, 'Please enter your password'],
-      maxLength: [6, 'Your password must be longer than 6 characters'],
+      minLength: [6, 'Your password must be longer than 6 chassssracters'],
       select: false,
     },
     avatar: {
       public_id: {
         type: String,
         required: true,
+        default: `avatar_${Date.now()}`,
       },
       url: {
         type: String,
         required: true,
+        default:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLMI5YxZE03Vnj-s-sth2_JxlPd30Zy7yEGg&usqp=CAU',
       },
     },
     role: {
@@ -40,5 +43,11 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// encrypt password before save
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) next();
+  this.password = await bcrypt.hash(this.password, 10);
+});
 
 module.exports = mongoose.models.User || mongoose.model('User', userSchema);

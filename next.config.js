@@ -6,6 +6,9 @@ const nextConfig = {
     MONGO_PWD: 'TfvWue1TgXmqDYbS',
     MONGO_URI:
       'mongodb+srv://techdave:TfvWue1TgXmqDYbS@cluster0.uxfwa3a.mongodb.net/bookify?retryWrites=true&w=majority',
+    CLOUDINARY_CLOUD_NAME: 'bookify-techdave',
+    CLOUDINARY_API_KEY: '739477856127672',
+    CLOUDINARY_API_SECRET: 'tCQKDpHPjSQ3buzVMUbm_O_Bab4',
   },
   images: {
     domains: ['res.cloudinary.com'],

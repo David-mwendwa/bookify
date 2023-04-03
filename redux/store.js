@@ -1,32 +1,40 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { HYDRATE, createWrapper } from 'next-redux-wrapper';
-import thunk from 'redux-thunk';
+import thunkMiddleware from 'redux-thunk';
 import { allRoomsReducer, roomDetailsReducer } from './reducers/roomReducers';
+import { authReducer } from './reducers/userReducers';
 
 const reducers = combineReducers({
   allRooms: allRoomsReducer,
   roomDetails: roomDetailsReducer,
+  auth: authReducer,
 });
 
-const bindMiddleware = (middleware) => {
+const bindMiddlware = (middlware) => {
   if (process.env.NODE_ENV !== 'production') {
     const { composeWithDevTools } = require('redux-devtools-extension');
-    return composeWithDevTools(applyMiddleware(...middleware));
+    return composeWithDevTools(applyMiddleware(...middlware));
   }
-  return applyMiddleware(...middleware);
+
+  return applyMiddleware(...middlware);
 };
 
 const reducer = (state, action) => {
   if (action.type === HYDRATE) {
-    const nextState = { ...state, ...action.payload };
+    const nextState = {
+      ...state,
+      ...action.payload,
+    };
     return nextState;
   } else {
     return reducers(state, action);
   }
 };
 
+const middleware = [thunkMiddleware];
+
 const initStore = () => {
-  return createStore(reducer, bindMiddleware([thunk]));
+  return createStore(reducer, bindMiddlware(middleware));
 };
 
 export const wrapper = createWrapper(initStore);

@@ -28,10 +28,17 @@ export const register = catchAsyncErrors(async (req, res, next) => {
     email,
     password,
     avatar: {
-      public_id: "result.public_id",
-      url: "result.secure_url",
+      public_id: 'result.public_id',
+      url: 'result.secure_url',
     },
   });
 
   res.status(200).json({ success: true, message: 'user registered', user });
+});
+
+// current user profile => /api/me
+export const currentUserProfile = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user._id);
+
+  res.status(200).json({ success: true, user });
 });

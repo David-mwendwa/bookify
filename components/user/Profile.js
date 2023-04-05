@@ -3,9 +3,10 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import ButtonLoader from '../layout/ButtonLoader';
-import { register, clearErrors } from '../../redux/actions/userActions';
+import { updateProfile, clearErrors } from '../../redux/actions/userActions';
+import { PROFILE_UPDATE_RESET } from '../../redux/constants/userConstants';
 
-const Register = () => {
+const Profile = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -26,25 +27,25 @@ const Register = () => {
 
     if (error) {
       toast.error(error);
-      dispatch(clearErrors());
+      setTimeout(() => {
+        dispatch(clearErrors());
+      }, 2000);
     }
   }, [dispatch, success, error, router]);
 
   const handleChange = (e) => {
-   if (e.target.name === 'avatar') {
-     const reader = new FileReader();
-
-     reader.onload = () => {
-       if (reader.readyState === 2) {
-         setAvatar(reader.result);
-         setAvatarPreview(reader.result);
-       }
-     };
-
-     reader.readAsDataURL(e.target.files[0]);
-   } else {
-     setUser({ ...user, [e.target.name]: e.target.value });
-   }
+    if (e.target.name === avatar) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setAvatar(reader.result);
+          setAvatarPreview(reader.result);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      setUser({ ...user, [e.target.name]: e.target.value });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -131,7 +132,7 @@ const Register = () => {
               type='submit'
               className='btn btn-block py-3'
               disabled={loading ? true : false}>
-              {loading ? <ButtonLoader /> : 'REGISTER'}
+              {loading ? <ButtonLoader /> : 'UPDATE'}
             </button>
           </form>
         </div>
@@ -140,4 +141,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Profile;

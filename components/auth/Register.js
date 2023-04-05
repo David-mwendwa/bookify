@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import ButtonLoader from '../layout/ButtonLoader';
 import { register, clearErrors } from '../../redux/actions/userActions';
+import useInput from '../../utils/useInput';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,12 @@ const Register = () => {
   const [avatarPreview, setAvatarPreview] = useState(
     '/images/default_avatar.jpg'
   );
+  // const { values, handleChange: onChange } = useInput({
+  //   avatar: '',
+  //   avatarPreview: '/images/default_avatar.jpg',
+  // });
+  // let { avatar, avatarPreview } = values;
+  // console.log('VALUES', { values });
 
   const { name, email, password } = user;
 
@@ -31,27 +38,24 @@ const Register = () => {
   }, [dispatch, success, error, router]);
 
   const handleChange = (e) => {
-   if (e.target.name === 'avatar') {
-     const reader = new FileReader();
-
-     reader.onload = () => {
-       if (reader.readyState === 2) {
-         setAvatar(reader.result);
-         setAvatarPreview(reader.result);
-       }
-     };
-
-     reader.readAsDataURL(e.target.files[0]);
-   } else {
-     setUser({ ...user, [e.target.name]: e.target.value });
-   }
+    if (e.target.name === 'avatar') {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setAvatar(reader.result);
+          setAvatarPreview(reader.result);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      setUser({ ...user, [e.target.name]: e.target.value });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const userData = { name, email, password, avatar };
     console.log({ userData });
-    // TODO: throws an error
     dispatch(register(userData));
   };
 
@@ -106,6 +110,7 @@ const Register = () => {
                     <img
                       src={avatarPreview}
                       className='rounded-circle'
+                      name='avatarPreview'
                       alt='image'
                     />
                   </figure>

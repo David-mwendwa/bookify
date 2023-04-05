@@ -1,4 +1,7 @@
-import { uploadCloudinaryImage } from '../utils/cloudinary.js';
+import {
+  uploadToCloudinary,
+  removeFromCloudinary,
+} from '../utils/cloudinary.js';
 
 const User = require('../models/user.js');
 const ErrorHandler = require('../utils/errorHandler');
@@ -7,12 +10,11 @@ const catchAsyncErrors = require('../middlewares/catchAsyncErrors.js');
 
 // register user => /api/auth/register
 export const register = catchAsyncErrors(async (req, res, next) => {
-  const result = await uploadCloudinaryImage(req, {
+  const result = await uploadToCloudinary(req.body.avatar, {
     folder: 'bookify/avatars',
     width: '150',
     crop: 'scale',
   });
-
 
   const { name, email, password } = req.body;
 
@@ -37,8 +39,10 @@ export const currentUserProfile = catchAsyncErrors(async (req, res, next) => {
 });
 
 // update user profile => /api/me/update
+// TODO: make sure session is available on update page
 export const updateProfile = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user._id);
+  // const user = await User.findById('642aac05861cf5199d280e55');
 
   if (user) {
     user.name = req.body.name;
@@ -47,11 +51,10 @@ export const updateProfile = catchAsyncErrors(async (req, res, next) => {
   }
   // update avatar
   if (req.body.avatar !== '') {
-    const public_id = user.avatar.public_id;
     // delete user previous image/avatar
-    await cloudinary.v2.uploader.destroy(public_id);
+    await removeFromCloudinary(user.avatar.public_id);
 
-    const result = await uploadCloudinaryImage(req, {
+    const result = await uploadToCloudinary(req.body.avatar, {
       folder: 'bookify/avatars',
       width: '150',
       crop: 'scale',

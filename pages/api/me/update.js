@@ -9,6 +9,7 @@ const handler = nc({ onError });
 
 dbConnect();
 
-handler.use(isAuthenticatedUser).patch(updateProfile);
+// handler.use(isAuthenticatedUser).patch(updateProfile);
+handler.patch(updateProfile);
 
 export default handler;

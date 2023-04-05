@@ -10,27 +10,14 @@ cloudinary.config({
 });
 
 /**
- * Upload cloudnary image(s)
- * @param {*} req express request object - to access image from request body
+ * Upload file to cloudinary
+ * @param {*} file file request body e.g req.body.image
  * @param {*} options image options as object i.e folder: path to cloudinary storage folder, width, crop, public_id etc
- * @returns object containing public_id, secure_url
- * @example uploadCloudinaryImage(req, {folder: '<appname>/images', width: '400', crop: 'scale'});
+ * @returns cloudinary result object e.g contains public_id, secure_url, url etc
  */
-const uploadCloudinaryImage = async (req, options) => {
+// TODO: add a functionality to upload pdf, doc or other files
+const uploadToCloudinary = async (file, options) => {
   try {
-    let file =
-      req.body?.avatar ||
-      req.body?.avatars ||
-      req.body?.photo ||
-      req.body?.photos ||
-      req.body?.image ||
-      req.body?.images ||
-      req.body?.pic ||
-      req.body?.pics ||
-      req.body?.picture ||
-      req.body?.pictures ||
-      req.body?.profilePic ||
-      req.body?.profilePics;
     if (file) {
       return await cloudinary.v2.uploader.upload(file, {
         resource_type: 'auto',
@@ -43,12 +30,11 @@ const uploadCloudinaryImage = async (req, options) => {
 };
 
 /**
- * Delete cloudinary image
- * @param {*} image image to delete
+ * Destroy cloudinary file (can be used when updating or deleting a document)
+ * @param {*} id id of the file to delete (usually public_id)
  */
-// TODO: confirm if the image param is parsed, is from cloudinary and has public id
-const deleteCloudinaryImage = async (image) => {
-  await cloudinary.v2.uploader.destroy(image.public_id);
+const removeFromCloudinary = async (id) => {
+  await cloudinary.v2.uploader.destroy(id);
 };
 
-export { uploadCloudinaryImage, deleteCloudinaryImage };
+export { uploadToCloudinary, removeFromCloudinary };

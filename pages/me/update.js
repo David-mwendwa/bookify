@@ -11,6 +11,7 @@ const UpdateProfilePage = () => {
   );
 };
 
+// TODO: on user update the session becomes null
 export async function getServerSideProps(context) {
   const session = await getSession({ req: context.req });
   if (!session) {

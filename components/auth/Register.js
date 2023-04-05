@@ -35,7 +35,7 @@ const Register = () => {
       toast.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, success, error, router]);
+  }, [dispatch, success, error]);
 
   const handleChange = (e) => {
     if (e.target.name === 'avatar') {

@@ -20,7 +20,6 @@ const Profile = () => {
   const [avatarPreview, setAvatarPreview] = useState(
     '/images/default_avatar.jpg'
   );
-
   const { name, email, password } = user;
 
   const {
@@ -53,7 +52,7 @@ const Profile = () => {
       router.push('/');
       dispatch({ type: PROFILE_UPDATE_RESET });
     }
-  }, [dispatch, success, error, router, user, updated, avatarPreview]);
+  }, [dispatch, error, updated, currentUser]);
 
   const handleChange = (e) => {
     if (e.target.name === 'avatar') {

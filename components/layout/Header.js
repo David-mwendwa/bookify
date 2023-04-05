@@ -12,13 +12,11 @@ const Header = () => {
 
   useEffect(() => {
     dispatch(loadUser());
-  }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     dispatch(clearErrors());
-  //   }
-  // }, [dispatch, error]);
+    if (error) {
+      dispatch(clearErrors());
+    }
+  }, [dispatch, error]);
 
   const handleLogout = () => {
     signOut();

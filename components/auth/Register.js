@@ -26,7 +26,9 @@ const Register = () => {
 
     if (error) {
       toast.error(error);
-      dispatch(clearErrors());
+      setTimeout(() => {
+        dispatch(clearErrors());
+      }, 2000);
     }
   }, [dispatch, success, error, router]);
 

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadUser } from '../../redux/actions/userActions';
+import { clearErrors, loadUser } from '../../redux/actions/userActions';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { signOut } from 'next-auth/react';
@@ -13,6 +13,12 @@ const Header = () => {
   useEffect(() => {
     dispatch(loadUser());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      dispatch(clearErrors());
+    }
+  }, [dispatch, error]);
 
   const handleLogout = () => {
     signOut();

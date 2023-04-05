@@ -52,5 +52,9 @@ export const loadUser = () => async (dispatch) => {
 
 // clear errors
 export const clearErrors = () => async (dispatch) => {
-  dispatch({ type: CLEAR_ERRORS });
+  try {
+    dispatch({ type: CLEAR_ERRORS });
+  } catch (error) {
+    console.log('ERROR', error);
+  }
 };

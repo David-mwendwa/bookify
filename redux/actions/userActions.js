@@ -6,6 +6,9 @@ import {
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAIL,
+  PROFILE_UPDATE_REQUEST,
+  PROFILE_UPDATE_SUCCESS,
+  PROFILE_UPDATE_FAIL,
   CLEAR_ERRORS,
 } from '../constants/userConstants';
 
@@ -42,6 +45,28 @@ export const loadUser = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: LOAD_USER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// update profile
+export const updateProfile = (user) => async (dispatch) => {
+  console.log({ user });
+  dispatch({ type: PROFILE_UPDATE_REQUEST });
+
+  try {
+    const config = {
+      headers: { 'Content-Type': 'application/json' },
+    };
+    const { data } = await axios.patch('/api/me/update', user, config);
+    dispatch({ type: PROFILE_UPDATE_SUCCESS, payload: data.success });
+  } catch (error) {
+    dispatch({
+      type: PROFILE_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

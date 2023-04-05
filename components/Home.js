@@ -45,7 +45,7 @@ const Home = () => {
           <i className='fa fa-arrow-left'></i> Back to Search
         </Link>
         <div className='row'>
-          {rooms.length === 0 ? (
+          {rooms?.length === 0 ? (
             <div className='alert alert-info w-100 text-center'>
               No Rooms Found
             </div>

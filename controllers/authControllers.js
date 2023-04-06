@@ -90,12 +90,16 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const resetUrl = `${origin}/password/reset/${resetToken}`;
 
   const message = `Forgot your password? Click the URL below to reset \n\n${resetUrl} \n\nIf you haven't requested for this email, please ignore it.`;
+  const html = `<p>Forgot your password? Click the URL below to reset</p>
+                <h5><a href="${resetUrl}">${resetUrl}</a></h5>
+                <p>If you haven't requested for this email, please ignore it.</p>`;
 
   try {
     await sendEmail({
       email: user.email,
       subject: 'Bookify Password Recovery',
       message,
+      html,
     });
     res.status(200).json({
       success: true,

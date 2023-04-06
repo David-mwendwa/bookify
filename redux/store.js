@@ -2,13 +2,18 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { HYDRATE, createWrapper } from 'next-redux-wrapper';
 import thunkMiddleware from 'redux-thunk';
 import { allRoomsReducer, roomDetailsReducer } from './reducers/roomReducers';
-import { authReducer, userReducer } from './reducers/userReducers';
+import {
+  authReducer,
+  forgotPasswordReducer,
+  userReducer,
+} from './reducers/userReducers';
 
-const reducers = combineReducers({
+const reducers = combineReducers({ 
   allRooms: allRoomsReducer,
   roomDetails: roomDetailsReducer,
   auth: authReducer,
   user: userReducer,
+  forgotPassword: forgotPasswordReducer,
 });
 
 const bindMiddlware = (middlware) => {

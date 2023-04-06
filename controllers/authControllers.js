@@ -3,11 +3,11 @@ import {
   removeFromCloudinary,
 } from '../utils/cloudinary.js';
 import sendEmail from '../utils/sendEmail.js';
+import absoluteUrl from 'next-absolute-url';
 
 const User = require('../models/user.js');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncErrors = require('../middlewares/catchAsyncErrors.js');
-const absoluteUrl = require('next-absolute-url');
 
 // register user => /api/auth/register
 export const register = catchAsyncErrors(async (req, res, next) => {
@@ -87,9 +87,9 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const { origin } = absoluteUrl(req);
 
   // create passwort reset url
-  const resetURL = `${origin}/password/reset/${resetToken}`;
+  const resetUrl = `${origin}/password/reset/${resetToken}`;
 
-  const message = `Your password reset url is as follows \n\n ${resetURL} \n\n If you have not request this email, then ignore it`;
+  const message = `Forgot your password? Click the URL below to reset \n\n${resetUrl} \n\nIf you haven't requested for this email, please ignore it.`;
 
   try {
     await sendEmail({

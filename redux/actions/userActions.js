@@ -9,6 +9,9 @@ import {
   PROFILE_UPDATE_REQUEST,
   PROFILE_UPDATE_SUCCESS,
   PROFILE_UPDATE_FAIL,
+  PASSWORD_FORGOT_REQUEST,
+  PASSWORD_FORGOT_SUCCESS,
+  PASSWORD_FORGOT_FAIL,
   CLEAR_ERRORS,
 } from '../constants/userConstants';
 
@@ -55,7 +58,6 @@ export const loadUser = () => async (dispatch) => {
 
 // update profile
 export const updateProfile = (user) => async (dispatch) => {
-  console.log({ user });
   dispatch({ type: PROFILE_UPDATE_REQUEST });
 
   try {
@@ -67,6 +69,26 @@ export const updateProfile = (user) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PROFILE_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const forgotPassword = (email) => async (dispatch) => {
+  dispatch({ type: PASSWORD_FORGOT_REQUEST });
+
+  try {
+    const config = {
+      headers: { 'Content-Type': 'application/json' },
+    };
+    const { data } = await axios.post('/api/password/forgot', email, config);
+    dispatch({ type: PASSWORD_FORGOT_SUCCESS, payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: PASSWORD_FORGOT_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

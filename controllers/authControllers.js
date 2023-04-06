@@ -2,11 +2,12 @@ import {
   uploadToCloudinary,
   removeFromCloudinary,
 } from '../utils/cloudinary.js';
+import sendEmail from '../utils/sendEmail.js';
 
 const User = require('../models/user.js');
 const ErrorHandler = require('../utils/errorHandler');
-const APIFeatures = require('../utils/apiFeatures.js');
 const catchAsyncErrors = require('../middlewares/catchAsyncErrors.js');
+const absoluteUrl = require('next-absolute-url');
 
 // register user => /api/auth/register
 export const register = catchAsyncErrors(async (req, res, next) => {
@@ -68,4 +69,43 @@ export const updateProfile = catchAsyncErrors(async (req, res, next) => {
   await user.save();
 
   res.status(200).json({ success: true, user });
+});
+
+// forgot password => /api/password/forgot
+export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+    return next(new ErrorHandler('User not found', 404));
+  }
+
+  // get reset token
+  const resetToken = user.getPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  // get origin
+  const { origin } = absoluteUrl(req);
+
+  // create passwort reset url
+  const resetURL = `${origin}/password/reset/${resetToken}`;
+
+  const message = `Your password reset url is as follows \n\n ${resetURL} \n\n If you have not request this email, then ignore it`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: 'Bookify Password Recovery',
+      message,
+    });
+    res.status(200).json({
+      success: true,
+      message: `Password recovery email send to: ${user.email}`,
+    });
+  } catch (error) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpire = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    return next(new ErrorHandler(error.message, 500));
+  }
 });

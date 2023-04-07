@@ -19,13 +19,13 @@ const sendEmail = async (options) => {
 
     const message = {
       from: `${process.env.SMTP_FROM_NAME} <${process.env.SMTP_FROM_EMAIL}>`,
-      to: options.email,
-      subject: options.subject,
+      to: options?.email,
+      subject: options?.subject,
       html: options.html,
       // text: options.message,
     };
 
-    await transporter.sendMail(message);
+    return await transporter.sendMail(message);
   } catch (error) {
     throw new Error(error);
   }

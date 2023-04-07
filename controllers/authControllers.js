@@ -91,12 +91,10 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const resetUrl = `${origin}/password/reset/${resetToken}`;
 
   const message = `Forgot your password? Click the URL below to reset \n\n${resetUrl} \n\nIf you haven't requested for this email, please ignore it.`;
-  const html = `<p className='text-danger'>Forgot your password? Click the URL below to reset</p>
-                <p><a href="${resetUrl}">${resetUrl}</a></p>
-                <p>If you haven't requested for this email, please ignore it.</p>`;
+  const html = `<p className='text-danger'>Forgot your password? Click the URL below to reset</p><p><a href="${resetUrl}">${resetUrl}</a></p><p>If you haven't requested for this email, please ignore it.</p>`;
 
   try {
-    await sendEmail({
+    let data = await sendEmail({
       email: user.email,
       subject: 'Bookify Password Recovery',
       message,
@@ -104,6 +102,7 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
     });
     res.status(200).json({
       success: true,
+      data,
       message: `Password recovery email send to: ${user.email}`,
     });
   } catch (error) {

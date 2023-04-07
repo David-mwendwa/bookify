@@ -90,8 +90,8 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const resetUrl = `${origin}/password/reset/${resetToken}`;
 
   const message = `Forgot your password? Click the URL below to reset \n\n${resetUrl} \n\nIf you haven't requested for this email, please ignore it.`;
-  const html = `<p>Forgot your password? Click the URL below to reset</p>
-                <h5><a href="${resetUrl}">${resetUrl}</a></h5>
+  const html = `<p className='text-danger'>Forgot your password? Click the URL below to reset</p>
+                <p><a href="${resetUrl}">${resetUrl}</a></p>
                 <p>If you haven't requested for this email, please ignore it.</p>`;
 
   try {
@@ -112,4 +112,38 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
     return next(new ErrorHandler(error.message, 500));
   }
+});
+
+// reset password => /api/password/reset/:token
+export const resetPassword = catchAsyncErrors(async (req, res, next) => {
+  // hash url token
+  const passwordResetToken = crypto
+    .createHash('sha256')
+    .update(req.query.token)
+    .digest('hex');
+
+  const user = await User.findOne({
+    passwordResetToken,
+    passwordResetExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(
+      new ErrorHandler('password reset token is invalid or has expired', 404)
+    );
+  }
+
+  if (req.body.password !== req.body.confirmPassword) {
+    return next(new ErrorHandler('password does not match', 404));
+  }
+
+  // setup the new password
+  user.password = req.body.password;
+
+  user.passwordResetToken = undefined;
+  user.passwordResetExpire = undefined;
+
+  await user.save();
+
+  res.status(200).json({ success: true, message: 'password updated!' });
 });

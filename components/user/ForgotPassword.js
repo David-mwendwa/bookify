@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import ButtonLoader from '../layout/ButtonLoader';
 import { forgotPassword, clearErrors } from '../../redux/actions/userActions';
-import Loader from '../layout/Loader';
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();

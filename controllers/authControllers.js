@@ -8,6 +8,7 @@ import absoluteUrl from 'next-absolute-url';
 const User = require('../models/user.js');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncErrors = require('../middlewares/catchAsyncErrors.js');
+import crypto from 'crypto';
 
 // register user => /api/auth/register
 export const register = catchAsyncErrors(async (req, res, next) => {

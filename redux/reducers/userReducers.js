@@ -19,7 +19,7 @@ import {
 } from '../constants/userConstants';
 
 // All rooms reducer
-export const authReducer = (state = { user: null }, action) => {
+export const authReducer = (state = { loading: true, user: null }, action) => {
   switch (action.type) {
     case USER_REGISTER_REQUEST:
       return { loading: true, authenticated: false };
@@ -34,6 +34,28 @@ export const authReducer = (state = { user: null }, action) => {
       return { loading: false, authenticated: true, user: action.payload };
 
     case USER_REGISTER_FAIL:
+    case LOAD_USER_FAIL:
+      return { loading: false, error: action.payload };
+
+    case CLEAR_ERRORS:
+      return { ...state, error: null };
+
+    default:
+      return state;
+  }
+};
+
+export const loadedUserReducer = (
+  state = { loading: true, user: null },
+  action
+) => {
+  switch (action.type) {
+    case LOAD_USER_REQUEST:
+      return { loading: true, authenticated: false };
+
+    case LOAD_USER_SUCCESS:
+      return { loading: false, authenticated: true, user: action.payload };
+
     case LOAD_USER_FAIL:
       return { loading: false, error: action.payload };
 

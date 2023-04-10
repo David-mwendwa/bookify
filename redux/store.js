@@ -5,14 +5,16 @@ import { allRoomsReducer, roomDetailsReducer } from './reducers/roomReducers';
 import {
   authReducer,
   forgotPasswordReducer,
+  loadedUserReducer,
   userReducer,
 } from './reducers/userReducers';
 
-const reducers = combineReducers({ 
+const reducers = combineReducers({
   allRooms: allRoomsReducer,
   roomDetails: roomDetailsReducer,
   auth: authReducer,
   user: userReducer,
+  loadedUser: loadedUserReducer,
   forgotPassword: forgotPasswordReducer,
 });
 

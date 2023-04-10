@@ -154,7 +154,7 @@ const Profile = () => {
                   id='login_button'
                   type='submit'
                   className='btn btn-block py-3'
-                  disabled={loading ? true : false}>
+                  disabled={updateLoading ? true : false}>
                   {updateLoading ? <ButtonLoader /> : 'UPDATE'}
                 </button>
               </form>

@@ -1,8 +1,10 @@
-import absoluteUrl from 'next-absolute-url';
-
 const Booking = require('../models/booking.js');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncErrors = require('../middlewares/catchAsyncErrors.js');
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
+
+const moment = extendMoment(Moment);
 
 // create new booking => /api/bookings
 export const newBooking = catchAsyncErrors(async (req, res, next) => {
@@ -63,5 +65,27 @@ export const checkRoomBookingAvailability = catchAsyncErrors(
     }
 
     res.status(200).json({ success: true, isAvailable });
+  }
+);
+
+// check booked dates of a room => /api/bookings/check_booked_dates
+export const checkBookedDatesOfRoom = catchAsyncErrors(
+  async (req, res, next) => {
+    let { roomId } = req.query;
+
+    const bookings = await Booking.find({ room: roomId });
+
+    let bookedDates = [];
+    bookings.forEach((booking) => {
+      const range = moment.range(
+        moment(booking.checkInDate),
+        moment(booking.checkOutDate)
+      );
+
+      const dates = Array.from(range.by('day'));
+      bookedDates = bookedDates.concat(dates);
+    });
+
+    res.status(200).json({ success: true, bookedDates });
   }
 );

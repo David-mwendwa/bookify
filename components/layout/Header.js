@@ -11,14 +11,10 @@ const Header = () => {
   const { loading, user, error } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(loadUser());
-  }, [dispatch]);
-
-  // useEffect(() => {
-  //   if (error) {
-  //     dispatch(clearErrors());
-  //   }
-  // }, [dispatch, error]);
+    if (!user) {
+      dispatch(loadUser());
+    }
+  }, [dispatch, user]);
 
   const handleLogout = () => {
     signOut();

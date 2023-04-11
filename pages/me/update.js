@@ -5,7 +5,7 @@ import Profile from '../../components/user/Profile';
 
 const UpdateProfilePage = () => {
   return (
-    <Layout>
+    <Layout title='update profile'>
       <Profile />
     </Layout>
   );

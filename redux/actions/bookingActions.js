@@ -1,4 +1,5 @@
 import axios from 'axios';
+import absoluteUrl from 'next-absolute-url';
 import {
   CHECK_BOOKING_REQUEST,
   CHECK_BOOKING_SUCCESS,
@@ -49,11 +50,17 @@ export const getBookedDates = (id) => async (dispatch) => {
 };
 
 // check booking
-export const getMyBookings = () => async (dispatch) => {
+export const getMyBookings = (authCookie, req) => async (dispatch) => {
   dispatch({ type: MY_BOOKINGS_REQUEST });
 
   try {
-    const { data } = await axios.get(`/api/bookings/me`);
+    const config = {
+      headers: {
+        cookie: authCookie,
+      },
+    };
+    const { origin } = absoluteUrl(req);
+    const { data } = await axios.get(`${origin}/api/bookings/me`, config);
     dispatch({ type: MY_BOOKINGS_SUCCESS, payload: data.bookings });
   } catch (error) {
     dispatch({

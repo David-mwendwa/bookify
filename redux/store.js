@@ -10,6 +10,7 @@ import {
 } from './reducers/userReducers';
 import {
   bookedDatesReducer,
+  bookingsReducer,
   checkBookingReducer,
 } from './reducers/bookingReducers';
 
@@ -22,6 +23,7 @@ const reducers = combineReducers({
   forgotPassword: forgotPasswordReducer,
   checkBooking: checkBookingReducer,
   bookedDates: bookedDatesReducer,
+  bookings: bookingsReducer,
 });
 
 const bindMiddlware = (middlware) => {

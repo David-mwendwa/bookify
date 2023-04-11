@@ -1,4 +1,5 @@
 const Booking = require('../models/booking.js');
+const Room = require('../models/room.js');
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncErrors = require('../middlewares/catchAsyncErrors.js');
 import Moment from 'moment';
@@ -99,9 +100,19 @@ export const checkBookedDatesOfRoom = catchAsyncErrors(
   }
 );
 
-// get all bookings of current user => /api/bookings/check_booked_dates
+// get all bookings of current user => /api/bookings/me
 export const myBookings = catchAsyncErrors(async (req, res, next) => {
   let bookings = await Booking.find({ user: req.user._id });
+
+  res.status(200).json({ success: true, bookings });
+});
+
+// get booking details => /api/bookings/:id
+export const getBookingDetails = catchAsyncErrors(async (req, res, next) => {
+  let bookings = await Booking.findById(req.query.id).populate([
+    { path: 'room', select: 'name pricePerNight images' },
+    { path: 'user', select: 'name email' },
+  ]);
 
   res.status(200).json({ success: true, bookings });
 });

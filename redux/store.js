@@ -8,6 +8,7 @@ import {
   loadedUserReducer,
   userReducer,
 } from './reducers/userReducers';
+import { checkBookingReducer } from './reducers/bookingReducers';
 
 const reducers = combineReducers({
   allRooms: allRoomsReducer,
@@ -16,6 +17,7 @@ const reducers = combineReducers({
   user: userReducer,
   loadedUser: loadedUserReducer,
   forgotPassword: forgotPasswordReducer,
+  checkBooking: checkBookingReducer,
 });
 
 const bindMiddlware = (middlware) => {

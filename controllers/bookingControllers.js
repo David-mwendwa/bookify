@@ -14,7 +14,7 @@ export const newBooking = catchAsyncErrors(async (req, res, next) => {
     daysOfStay,
     amountPaid,
     paymentInfo,
-  } = req.query;
+  } = req.body;
 
   const booking = await Booking.create({
     room,
@@ -23,7 +23,7 @@ export const newBooking = catchAsyncErrors(async (req, res, next) => {
     checkInDate,
     checkOutDate,
     daysOfStay,
-    amountPaid: 90,
+    amountPaid,
     paymentInfo,
   });
 
@@ -62,6 +62,6 @@ export const checkRoomBookingAvailability = catchAsyncErrors(
       isAvailable = false;
     }
 
-    res.status(200).json({ success: true, data: bookings });
+    res.status(200).json({ success: true, isAvailable });
   }
 );

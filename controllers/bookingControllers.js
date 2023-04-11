@@ -102,7 +102,10 @@ export const checkBookedDatesOfRoom = catchAsyncErrors(
 
 // get all bookings of current user => /api/bookings/me
 export const myBookings = catchAsyncErrors(async (req, res, next) => {
-  let bookings = await Booking.find({ user: req.user._id });
+  let bookings = await Booking.find({ user: req.user._id }).populate([
+    { path: 'room', select: 'name pricePerNight images' },
+    { path: 'user', select: 'name email' },
+  ]);
 
   res.status(200).json({ success: true, bookings });
 });

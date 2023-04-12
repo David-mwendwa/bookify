@@ -7,6 +7,11 @@ const nextConfig = {
     MONGO_URI:
       'mongodb+srv://techdave:TfvWue1TgXmqDYbS@cluster0.uxfwa3a.mongodb.net/bookify?retryWrites=true&w=majority',
 
+    STRIPE_API_KEY:
+      'pk_test_51Imu8iKOyrEmScQWPjLK1SnUf9PbG8rllu8jmde1hV3ACQ6Qgmah6LUbIY6ihb89T4drjJvpcopn6V5HMwKvZEef00WiY46IBc',
+    STRIPE_SECRET_KEY:
+      'sk_test_51Imu8iKOyrEmScQW3cepN6ppj7EXKrrhf3VTtEkBihn9Kt2o8S5PH4Or5w7VARuWOmF6HTsbU8LrbiT2g6oGFnid00mvREAaRm',
+
     CLOUDINARY_CLOUD_NAME: 'techdave',
     CLOUDINARY_API_KEY: '739477856127672',
     CLOUDINARY_API_SECRET: 'tCQKDpHPjSQ3buzVMUbm_O_Bab4',

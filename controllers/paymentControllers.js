@@ -27,13 +27,18 @@ export const stripeCheckoutSession = catchAsyncErrors(
       customer_email: req.user.email,
       client_reference_id: req.query.roomId,
       metadata: { checkInDate, checkOutDate, daysOfStay },
+      mode: 'payment',
       line_items: [
         {
-          name: room.name,
-          images: [`${room.images[0].url}`],
-          amount: req.query.amount * 100,
-          currency: 'usd',
           quantity: 1,
+          price_data: {
+            currency: 'usd',
+            unit_amount: req.query.amount * 100,
+            product_data: {
+              name: room.name,
+              images: [`${room.images[0].url}`],
+            },
+          },
         },
       ],
     });

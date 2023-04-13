@@ -1,7 +1,11 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { HYDRATE, createWrapper } from 'next-redux-wrapper';
 import thunkMiddleware from 'redux-thunk';
-import { allRoomsReducer, roomDetailsReducer } from './reducers/roomReducers';
+import {
+  allRoomsReducer,
+  newReviewReducer,
+  roomDetailsReducer,
+} from './reducers/roomReducers';
 import {
   authReducer,
   forgotPasswordReducer,
@@ -26,6 +30,7 @@ const reducers = combineReducers({
   bookedDates: bookedDatesReducer,
   bookings: bookingsReducer,
   bookingDetails: bookingDetailsReducer,
+  newReview: newReviewReducer,
 });
 
 const bindMiddlware = (middlware) => {

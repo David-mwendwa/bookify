@@ -50,13 +50,16 @@ const NewReview = () => {
           if (index < this.starValue) {
             star.classList.add('red');
             setRating(this.starValue);
-          } else star.classList.remove('red');
+          } else {
+            star.classList.remove('red');
+          }
         }
         if (e.type === 'mouseover') {
           if (index < this.starValue) {
             star.classList.add('light-red');
-            setRating(this.starValue);
-          } else star.classList.remove('light-red');
+          } else {
+            star.classList.remove('light-red');
+          }
         }
         if (e.type === 'mouseout') {
           star.classList.remove('light-red');

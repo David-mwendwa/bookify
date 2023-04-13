@@ -9,6 +9,9 @@ import {
   NEW_REVIEW_SUCCESS,
   NEW_REVIEW_FAIL,
   NEW_REVIEW_RESET,
+  REVIEW_AVAILABILITY_REQUEST,
+  REVIEW_AVAILABILITY_SUCCESS,
+  REVIEW_AVAILABILITY_FAIL,
   CLEAR_ERRORS,
 } from '../constants/roomConstants';
 
@@ -71,6 +74,29 @@ export const newReviewReducer = (state = {}, action) => {
       return { success: false };
 
     case NEW_REVIEW_FAIL:
+      return { loading: false, error: action.payload };
+
+    case CLEAR_ERRORS:
+      return { ...state, error: null };
+
+    default:
+      return state;
+  }
+};
+
+// Room details reducer
+export const checkReviewReducer = (
+  state = { reviewAvailable: null },
+  action
+) => {
+  switch (action.type) {
+    case REVIEW_AVAILABILITY_REQUEST:
+      return { loading: true };
+
+    case REVIEW_AVAILABILITY_SUCCESS:
+      return { loading: false, reviewAvailable: action.payload };
+
+    case REVIEW_AVAILABILITY_FAIL:
       return { loading: false, error: action.payload };
 
     case CLEAR_ERRORS:

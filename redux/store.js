@@ -3,6 +3,7 @@ import { HYDRATE, createWrapper } from 'next-redux-wrapper';
 import thunkMiddleware from 'redux-thunk';
 import {
   allRoomsReducer,
+  checkReviewReducer,
   newReviewReducer,
   roomDetailsReducer,
 } from './reducers/roomReducers';
@@ -31,6 +32,7 @@ const reducers = combineReducers({
   bookings: bookingsReducer,
   bookingDetails: bookingDetailsReducer,
   newReview: newReviewReducer,
+  checkReview: checkReviewReducer,
 });
 
 const bindMiddlware = (middlware) => {

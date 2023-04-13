@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { clearErrors, newReview } from '../../redux/actions/roomActions';
+import {
+  clearErrors,
+  newReview,
+  checkReviewAvailability,
+} from '../../redux/actions/roomActions';
 import { NEW_REVIEW_RESET } from '../../redux/constants/roomConstants';
 
 const NewReview = () => {
@@ -13,10 +17,14 @@ const NewReview = () => {
   const [comment, setComment] = useState('');
 
   const { success, error } = useSelector((state) => state.newReview);
+  const { reviewAvailable } = useSelector((state) => state.checkReview);
 
   const { id } = router.query;
 
   useEffect(() => {
+    if (id !== undefined) {
+      dispatch(checkReviewAvailability(id));
+    }
     if (error) {
       toast.error(error);
       dispatch(clearErrors());
@@ -26,7 +34,7 @@ const NewReview = () => {
       toast.success('Review is posted');
       dispatch({ type: NEW_REVIEW_RESET });
     }
-  }, [dispatch, error, success]);
+  }, [dispatch, error, success, id]);
 
   // TODO onsubmit the app throw 'login first' error
   const handleSubmit = () => {
@@ -70,15 +78,17 @@ const NewReview = () => {
 
   return (
     <>
-      <button
-        id='review_btn'
-        type='button'
-        className='btn btn-primary mt-4 mb-5'
-        data-toggle='modal'
-        data-target='#ratingModal'
-        onClick={setUserRatings}>
-        Submit Your Review
-      </button>
+      {reviewAvailable && (
+        <button
+          id='review_btn'
+          type='button'
+          className='btn btn-primary mt-4 mb-5'
+          data-toggle='modal'
+          data-target='#ratingModal'
+          onClick={setUserRatings}>
+          Submit Your Review
+        </button>
+      )}
 
       <div
         className='modal fade'

@@ -50,8 +50,9 @@ export const stripeCheckoutSession = catchAsyncErrors(
 
 // Create new booking after payment => /api/webhook
 export const webhookCheckout = catchAsyncErrors(async (req, res, next) => {
-  const rawBody = getRawBody(req);
   try {
+    const rawBody = await getRawBody(req);
+
     const signature = req.headers['stripe-signature'];
     const event = stripe.webhooks.constructEvent(
       rawBody,
@@ -61,8 +62,8 @@ export const webhookCheckout = catchAsyncErrors(async (req, res, next) => {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
       const room = session.client_reference_id;
-      const user = await User.findOne({ email: session.customer_email }).id;
-      const amountPaid = session.unit_amount / 100;
+      const user = (await User.findOne({ email: session.customer_email })).id;
+      const amountPaid = session.amount_total / 100;
       const paymentInfo = {
         id: session.payment_intent,
         status: session.payment_status,
@@ -73,15 +74,16 @@ export const webhookCheckout = catchAsyncErrors(async (req, res, next) => {
 
       const booking = await Booking.create({
         room,
-        user: req?.user?._id || '642aac05861cf5199d280e55',
+        user,
         checkInDate,
         checkOutDate,
         daysOfStay,
         amountPaid,
         paymentInfo,
+        paidAt: Date.now(),
       });
-
-      res.status(200).json({ success: true });
+      console.log({ booking });
+      res.status(200).json({ success: true, booking });
     }
   } catch (error) {
     console.log('Error in stripe checkout payment', error);

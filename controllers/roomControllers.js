@@ -1,4 +1,5 @@
 const Room = require('../models/room.js');
+const Booking = require('../models/booking.js');
 const ErrorHandler = require('../utils/errorHandler');
 const APIFeatures = require('../utils/apiFeatures.js');
 const catchAsyncErrors = require('../middlewares/catchAsyncErrors.js');
@@ -63,7 +64,7 @@ export const deleteRoom = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ success: true, message: 'Room is deleted' });
 });
 
-// create a new review => /api/review
+// create a new review => /api/reviews
 export const createRoomReview = catchAsyncErrors(async (req, res, next) => {
   const { rating, comment, roomId } = req.body;
 
@@ -102,3 +103,19 @@ export const createRoomReview = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({ success: true });
 });
+
+// check review availability => /api/reviews/check_review_availablity
+export const checkReviewAvailability = catchAsyncErrors(
+  async (req, res, next) => {
+    const { roomId } = req.query;
+    const bookings = await Booking.find({
+      user: req.user?._id || '642aac05861cf5199d280e55',
+      room: roomId,
+    });
+
+    let isReviewAvailable = false;
+    if (bookings.length > 0) isReviewAvailable = true;
+
+    res.status(200).json({ success: true, isReviewAvailable });
+  }
+);

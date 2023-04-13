@@ -75,7 +75,7 @@ const RoomDetails = () => {
       checkInDate,
       checkOutDate,
       daysOfStay,
-      amountPaid: 90,
+      amountPaid,
       paymentInfo: {
         id: 'STRIPE_PAYMENT_ID',
         status: 'STRIPE_PAYMENT_STATUS',

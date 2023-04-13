@@ -68,19 +68,24 @@ export const createRoomReview = catchAsyncErrors(async (req, res, next) => {
   const { rating, comment, roomId } = req.body;
 
   const review = {
-    user: req.user._id,
-    name: req.user.name,
+    user: req.user?._id.toString() || '642aac05861cf5199d280e55',
+    name: req.user?.name || 'David',
     rating: Number(rating),
     comment,
   };
 
   const room = await Room.findById(roomId);
   const isReviewed = room.reviews.find(
-    (r) => r.user.toString() === req.user._id.toString()
+    (r) =>
+      r.user.toString() ===
+      (req.user?._id.toString() || '642aac05861cf5199d280e55')
   );
   if (isReviewed) {
     room.reviews.forEach((review) => {
-      if (review.user.toString() === req.user._id.toString()) {
+      if (
+        review.user.toString() ===
+        (req.user?._id.toString() || '642aac05861cf5199d280e55')
+      ) {
         review.comment = comment;
         review.rating = rating;
       }

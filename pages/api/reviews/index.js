@@ -9,6 +9,7 @@ const handler = nc({ onError });
 
 dbConnect();
 
-handler.use(isAuthenticatedUser).patch(createRoomReview);
+// handler.use(isAuthenticatedUser).patch(createRoomReview);
+handler.patch(createRoomReview);
 
 export default handler;

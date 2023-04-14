@@ -121,7 +121,7 @@ export const checkReviewAvailability = catchAsyncErrors(
 );
 
 // Get all romms - ADMIN => /api/admin/rooms
-export const getAllRooms = catchAsyncErrors(async (req, res, next) => {
+export const allAdminRooms = catchAsyncErrors(async (req, res, next) => {
   const rooms = await Room.find();
 
   res.status(200).json({ success: true, rooms });

@@ -43,8 +43,8 @@ export const currentUserProfile = catchAsyncErrors(async (req, res, next) => {
 // update user profile => /api/me/update
 // TODO: make sure session is available on update page
 export const updateProfile = catchAsyncErrors(async (req, res, next) => {
-  // const user = await User.findById(req.user._id);
-  const user = await User.findById('642aac05861cf5199d280e55');
+  const user = await User.findById(req.user?._id || '642aac05861cf5199d280e55');
+  // const user = await User.findById('642aac05861cf5199d280e55');
 
   if (user) {
     user.name = req.body.name;

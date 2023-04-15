@@ -1,3 +1,5 @@
+import { uploadToCloudinary } from '../utils/cloudinary.js';
+
 const Room = require('../models/room.js');
 const Booking = require('../models/booking.js');
 const ErrorHandler = require('../utils/errorHandler');
@@ -28,6 +30,21 @@ export const allRooms = catchAsyncErrors(async (req, res, next) => {
 
 // create new room => /api/rooms
 export const newRoom = catchAsyncErrors(async (req, res) => {
+  const images = req.body.images;
+  let imagesLinks = [];
+  for (let i = 0; i < images.length; i++) {
+    const result = await uploadToCloudinary(images[i], {
+      folder: 'bookify/rooms',
+      width: '150',
+      crop: 'scale',
+    });
+    imagesLinks.push({
+      public_id: result.public_id,
+      url: result.secure_url,
+    });
+  }
+  req.body.images = imagesLinks;
+  req.body.user = req.user?._id || '642aac05861cf5199d280e55';
   const room = await Room.create(req.body);
   res.status(200).json({ success: true, room });
 });

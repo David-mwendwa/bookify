@@ -17,7 +17,6 @@ cloudinary.config({
  */
 // TODO: add a functionality to upload pdf, doc or other files
 const uploadToCloudinary = async (file, options) => {
-  console.log({ file });
   try {
     let match = /data:([a-z\/]+)/.exec(file);
     if (file && match && /image/.test(match[1])) {

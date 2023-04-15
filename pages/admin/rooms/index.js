@@ -1,12 +1,12 @@
 import React from 'react';
 import { getSession } from 'next-auth/react';
-import Layout from '../../components/layout/Layout';
-import Profile from '../../components/user/Profile';
+import Layout from '../../../components/layout/Layout';
+import AllRooms from '../../../components/admin/AllRooms';
 
-const UpdateProfilePage = () => {
+const AllRoomsPage = () => {
   return (
-    <Layout title='update profile'>
-      <Profile />
+    <Layout title='All rooms'>
+      <AllRooms />
     </Layout>
   );
 };
@@ -16,8 +16,10 @@ export const getServerSideProps = async (context) => {
   try {
     const session = await getSession({ req });
     console.log({ session });
-    if (!session) return { redirect: { destination: '/login', permanent: false } };
-    return { props: { session } };
+    if (!session || session.user.role !== 'admin') {
+      return { redirect: { destination: '/login', permanent: false } };
+    }
+    return { props: {} };
   } catch (error) {
     console.log(error);
   }
@@ -39,4 +41,4 @@ export const getServerSideProps = async (context) => {
 //   };
 // }
 
-export default UpdateProfilePage;
+export default AllRoomsPage;

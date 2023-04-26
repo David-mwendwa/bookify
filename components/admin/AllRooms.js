@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
@@ -63,6 +63,12 @@ const AllRooms = () => {
       {loading && <Loader />}
       <>
         <h1 className='my-5'>{`${rooms && rooms.length} Rooms`}</h1>
+
+        <Link
+          href='/admin/rooms/new'
+          className='mt-0 btn text-white float-right new-room-btn'>
+          Create Room
+        </Link>
 
         <MDBDataTable
           data={setRooms()}

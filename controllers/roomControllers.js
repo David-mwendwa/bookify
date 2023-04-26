@@ -35,7 +35,7 @@ export const newRoom = catchAsyncErrors(async (req, res) => {
   for (let i = 0; i < images.length; i++) {
     const result = await uploadToCloudinary(images[i], {
       folder: 'bookify/rooms',
-      width: '150',
+      width: '400',
       crop: 'scale',
     });
     imagesLinks.push({

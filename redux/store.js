@@ -7,6 +7,7 @@ import {
   newReviewReducer,
   newRoomReducer,
   roomDetailsReducer,
+  roomReducer,
 } from './reducers/roomReducers';
 import {
   authReducer,
@@ -35,6 +36,7 @@ const reducers = combineReducers({
   newReview: newReviewReducer,
   checkReview: checkReviewReducer,
   newRoom: newRoomReducer,
+  room: roomReducer,
 });
 
 const bindMiddlware = (middlware) => {

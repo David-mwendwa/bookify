@@ -1,4 +1,7 @@
-import { uploadToCloudinary } from '../utils/cloudinary.js';
+import {
+  removeFromCloudinary,
+  uploadToCloudinary,
+} from '../utils/cloudinary.js';
 
 const Room = require('../models/room.js');
 const Booking = require('../models/booking.js');
@@ -35,8 +38,6 @@ export const newRoom = catchAsyncErrors(async (req, res) => {
   for (let i = 0; i < images.length; i++) {
     const result = await uploadToCloudinary(images[i], {
       folder: 'bookify/rooms',
-      width: '400',
-      crop: 'scale',
     });
     imagesLinks.push({
       public_id: result.public_id,
@@ -63,6 +64,26 @@ export const updateRoom = catchAsyncErrors(async (req, res, next) => {
   let room = await Room.findById(req.query.id);
   if (!room) {
     return next(new ErrorHandler('Room not found', 404));
+  }
+
+  const images = req.body.images;
+  if (images) {
+    // delete images associated with the room
+    for (let i = 0; i < room.images.length; i++) {
+      await removeFromCloudinary(room.images[i].public_id);
+    }
+
+    let imagesLinks = [];
+    for (let i = 0; i < images.length; i++) {
+      const result = await uploadToCloudinary(images[i], {
+        folder: 'bookify/rooms',
+      });
+      imagesLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
+    }
+    req.body.images = imagesLinks;
   }
   room = await Room.findByIdAndUpdate(req.query.id, req.body, {
     new: true,

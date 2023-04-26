@@ -106,7 +106,7 @@ export const newReview = (reviewData) => async (dispatch) => {
   }
 };
 
-// get all rooms
+// check permission to review
 export const checkReviewAvailability = (roomId) => async (dispatch) => {
   dispatch({ type: REVIEW_AVAILABILITY_REQUEST });
 

@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+
+import ButtonLoader from '../layout/ButtonLoader';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
-import ButtonLoader from '../layout/ButtonLoader';
-import { clearErrors, newRoom } from '../../redux/actions/roomActions';
+
+import { newRoom, clearErrors } from '../../redux/actions/roomActions';
 import { NEW_ROOM_RESET } from '../../redux/constants/roomConstants';
 
 const NewRoom = () => {
@@ -12,19 +15,21 @@ const NewRoom = () => {
   const [description, setDescription] = useState('');
   const [address, setAddress] = useState('');
   const [category, setCategory] = useState('King');
-  const [guestCapacity, setguestCapacity] = useState('');
-  const [numOfBeds, setNumOfBeds] = useState('');
+  const [guestCapacity, setGuestCapacity] = useState(1);
+  const [numOfBeds, setNumOfBeds] = useState(1);
   const [internet, setInternet] = useState(false);
   const [breakfast, setBreakfast] = useState(false);
   const [airConditioned, setAirConditioned] = useState(false);
   const [petsAllowed, setPetsAllowed] = useState(false);
   const [roomCleaning, setRoomCleaning] = useState(false);
+
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
 
   const dispatch = useDispatch();
   const router = useRouter();
-  const { success, loading, error } = useSelector((state) => state.newRoom);
+
+  const { loading, error, success } = useSelector((state) => state.newRoom);
 
   useEffect(() => {
     if (error) {
@@ -36,9 +41,9 @@ const NewRoom = () => {
       router.push('/admin/rooms');
       dispatch({ type: NEW_ROOM_RESET });
     }
-  }, [dispatch, success, error]);
+  }, [dispatch, error, success]);
 
-  const handleSubmit = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
 
     const roomData = {
@@ -57,22 +62,27 @@ const NewRoom = () => {
       images,
     };
 
+    if (images.length === 0) return toast.error('Please upload images.');
+
     dispatch(newRoom(roomData));
   };
 
-  const handleChange = (e) => {
-    let files = Array.from(e.target.files);
+  const onChange = (e) => {
+    const files = Array.from(e.target.files);
+
     setImages([]);
     setImagesPreview([]);
 
     files.forEach((file) => {
       const reader = new FileReader();
+
       reader.onload = () => {
         if (reader.readyState === 2) {
           setImages((oldArray) => [...oldArray, reader.result]);
           setImagesPreview((oldArray) => [...oldArray, reader.result]);
         }
       };
+
       reader.readAsDataURL(file);
     });
   };
@@ -83,8 +93,8 @@ const NewRoom = () => {
         <div className='col-10 col-lg-8'>
           <form
             className='shadow-lg'
-            enctype='multipart/form-data'
-            onSubmit={handleSubmit}>
+            onSubmit={submitHandler}
+            enctype='multipart/form-data'>
             <h1 className='mb-4'>New Room</h1>
             <div className='form-group'>
               <label htmlFor='name_field'>Name</label>
@@ -129,11 +139,12 @@ const NewRoom = () => {
                 required
               />
             </div>
+
             <div className='form-group'>
               <label htmlFor='category_field'>Category</label>
               <select
                 className='form-control'
-                id='category_field'
+                id='room_type_field'
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}>
                 {['King', 'Single', 'Twins'].map((category) => (
@@ -143,13 +154,14 @@ const NewRoom = () => {
                 ))}
               </select>
             </div>
+
             <div className='form-group'>
-              <label htmlFor='guest_field'>Guest Capacity</label>
+              <label htmlFor='category_field'>Guest Capacity</label>
               <select
                 className='form-control'
                 id='guest_field'
                 value={guestCapacity}
-                onChange={(e) => setguestCapacity(e.target.value)}>
+                onChange={(e) => setGuestCapacity(e.target.value)}>
                 {[1, 2, 3, 4, 5, 6].map((num) => (
                   <option key={num} value={num}>
                     {num}
@@ -157,20 +169,22 @@ const NewRoom = () => {
                 ))}
               </select>
             </div>
+
             <div className='form-group'>
-              <label htmlFor='numOfBeds_field'>Number of Beds</label>
+              <label htmlFor='category_field'>Number of Beds</label>
               <select
                 className='form-control'
-                id='numOfBeds_field'
+                id='numofbeds_field'
                 value={numOfBeds}
                 onChange={(e) => setNumOfBeds(e.target.value)}>
-                {[1, 2, 3, 4, 5, 6].map((num) => (
+                {[1, 2, 3].map((num) => (
                   <option key={num} value={num}>
                     {num}
                   </option>
                 ))}
               </select>
             </div>
+
             <label className='mb-3'>Room Features</label>
             <div className='form-check'>
               <input
@@ -238,6 +252,7 @@ const NewRoom = () => {
                 Room Cleaning
               </label>
             </div>
+
             <div className='form-group mt-4'>
               <label>Images</label>
               <div className='custom-file'>
@@ -246,24 +261,24 @@ const NewRoom = () => {
                   name='room_images'
                   className='custom-file-input'
                   id='customFile'
+                  onChange={onChange}
                   multiple
-                  value={images}
-                  onChange={handleChange}
                 />
                 <label className='custom-file-label' htmlFor='customFile'>
                   Choose Images
                 </label>
               </div>
-              {imagesPreview.map((image) => {
+
+              {imagesPreview.map((img) => (
                 <img
-                  src={image}
-                  key={image}
+                  src={img}
+                  key={img}
                   alt='Images Preview'
                   className='mt-3 mr-2'
                   width='55'
                   height='52'
-                />;
-              })}
+                />
+              ))}
             </div>
             <button
               type='submit'

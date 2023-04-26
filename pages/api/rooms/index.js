@@ -11,7 +11,7 @@ dbConnect();
 
 handler.get(allRooms);
 
-handler.use(isAuthenticatedUser, authorizeRoles('admin')).post(newRoom);
-// handler.post(newRoom);
+// handler.use(isAuthenticatedUser, authorizeRoles('admin')).post(newRoom);
+handler.post(newRoom);
 
 export default handler;

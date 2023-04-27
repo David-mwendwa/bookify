@@ -35,7 +35,7 @@ const AllBookings = () => {
       dispatch(clearErrors());
     }
     if (isDeleted) {
-      router.push('/admin/rooms');
+      router.push('/admin/bookings');
       dispatch({ type: DELETE_BOOKING_RESET });
     }
   }, [dispatch, deleteError, isDeleted]);

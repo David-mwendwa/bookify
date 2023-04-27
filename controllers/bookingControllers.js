@@ -122,7 +122,10 @@ export const getBookingDetails = catchAsyncErrors(async (req, res, next) => {
 
 // get all bookings - ADMIN => /api/admin/bookings
 export const allAdminBookings = catchAsyncErrors(async (req, res, next) => {
-  let bookings = await Booking.find();
+  let bookings = await Booking.find().populate([
+    { path: 'room', select: 'name pricePerNight images' },
+    { path: 'user', select: 'name email' },
+  ]);
 
   res.status(200).json({ success: true, bookings });
 });

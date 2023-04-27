@@ -59,26 +59,30 @@ const AllRooms = () => {
   };
 
   return (
-    <div className='container container-fluif'>
-      {loading && <Loader />}
-      <>
-        <h1 className='my-5'>{`${rooms && rooms.length} Rooms`}</h1>
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className='container container-fluid'>
+          {loading && <Loader />}
+          <h1 className='my-5'>{`${rooms && rooms.length} Rooms`}</h1>
 
-        <Link
-          href='/admin/rooms/new'
-          className='mt-0 btn text-white float-right new-room-btn'>
-          Create Room
-        </Link>
+          <Link
+            href='/admin/rooms/new'
+            className='mt-0 btn text-white float-right new-room-btn'>
+            Create Room
+          </Link>
 
-        <MDBDataTable
-          data={setRooms()}
-          className='px-3'
-          bordered
-          striped
-          hover
-        />
-      </>
-    </div>
+          <MDBDataTable
+            data={setRooms()}
+            className='px-3'
+            bordered
+            striped
+            hover
+          />
+        </div>
+      )}
+    </>
   );
 };
 

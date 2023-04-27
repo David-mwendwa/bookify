@@ -6,11 +6,18 @@ import { MDBDataTable } from 'mdbreact';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import Loader from '../layout/Loader';
-import { clearErrors, getAdminRooms } from '../../redux/actions/roomActions';
+import {
+  clearErrors,
+  getAdminRooms,
+  deleteRoom,
+} from '../../redux/actions/roomActions';
+import { DELETE_ROOM_RESET } from '../../redux/constants/roomConstants';
 
 const AllRooms = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { rooms, loading, error } = useSelector((state) => state.allRooms);
+  const { isDeleted, error: deleteError } = useSelector((state) => state.room);
 
   useEffect(() => {
     dispatch(getAdminRooms());
@@ -19,7 +26,17 @@ const AllRooms = () => {
       toast.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch]);
+
+    if (isDeleted) {
+      toast.error(deleteError);
+      dispatch(clearErrors());
+    }
+
+    if (isDeleted) {
+      router.push('/admin/rooms');
+      dispatch({ type: DELETE_ROOM_RESET });
+    }
+  }, [dispatch, deleteError, isDeleted]);
 
   const setRooms = () => {
     const data = {
@@ -47,7 +64,9 @@ const AllRooms = () => {
                 href={`/admin/rooms/${room._id}`}>
                 <i className='fa fa-pencil'></i>
               </Link>
-              <button className='btn btn-danger mx-2'>
+              <button
+                className='btn btn-danger mx-2'
+                onClick={() => handleDelete(room._id)}>
                 <i className='fa fa-trash'></i>
               </button>
             </>
@@ -56,6 +75,12 @@ const AllRooms = () => {
       });
 
     return data;
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure to delete the room?')) {
+      dispatch(deleteRoom(id));
+    }
   };
 
   return (

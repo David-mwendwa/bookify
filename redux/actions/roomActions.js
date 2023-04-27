@@ -22,6 +22,9 @@ import {
   UPDATE_ROOM_REQUEST,
   UPDATE_ROOM_SUCCESS,
   UPDATE_ROOM_FAIL,
+  DELETE_ROOM_REQUEST,
+  DELETE_ROOM_SUCCESS,
+  DELETE_ROOM_FAIL,
   CLEAR_ERRORS,
 } from '../constants/roomConstants';
 
@@ -81,6 +84,21 @@ export const getAdminRooms = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ADMIN_ROOMS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// delete room
+export const deleteRoom = (id) => async (dispatch) => {
+  dispatch({ type: DELETE_ROOM_REQUEST });
+
+  try {
+    const { data } = await axios.delete(`/api/rooms/${id}`);
+    dispatch({ type: DELETE_ROOM_SUCCESS, payload: data.success });
+  } catch (error) {
+    dispatch({
+      type: DELETE_ROOM_FAIL,
       payload: error.response.data.message,
     });
   }

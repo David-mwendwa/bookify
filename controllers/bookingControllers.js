@@ -119,3 +119,10 @@ export const getBookingDetails = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({ success: true, bookings });
 });
+
+// get all bookings - ADMIN => /api/admin/bookings
+export const allAdminBookings = catchAsyncErrors(async (req, res, next) => {
+  let bookings = await Booking.find();
+
+  res.status(200).json({ success: true, bookings });
+});

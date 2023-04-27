@@ -12,6 +12,9 @@ import {
   BOOKING_DETAILS_REQUEST,
   BOOKING_DETAILS_SUCCESS,
   BOOKING_DETAILS_FAIL,
+  ADMIN_BOOKINGS_REQUEST,
+  ADMIN_BOOKINGS_SUCCESS,
+  ADMIN_BOOKINGS_FAIL,
   CLEAR_ERRORS,
 } from '../constants/bookingConstants';
 
@@ -68,6 +71,25 @@ export const getMyBookings = (authCookie, req) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: MY_BOOKINGS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// get admin bookings
+export const getAdminBookings = () => async (dispatch) => {
+  dispatch({ type: ADMIN_BOOKINGS_REQUEST });
+
+  try {
+    const { origin } = absoluteUrl(req);
+    const { data } = await axios.get(`${origin}/api/admin/bookings`);
+    dispatch({ type: ADMIN_BOOKINGS_SUCCESS, payload: data.bookings });
+  } catch (error) {
+    dispatch({
+      type: ADMIN_BOOKINGS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

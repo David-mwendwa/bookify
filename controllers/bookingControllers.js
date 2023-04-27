@@ -126,3 +126,14 @@ export const allAdminBookings = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({ success: true, bookings });
 });
+
+// delete booking - ADMIN => /api/admin/bookings
+export const deleteBooking = catchAsyncErrors(async (req, res, next) => {
+  let booking = await Booking.findByIdAndRemove(req.query.id);
+
+  if (!booking) {
+    return next(new ErrorHandler('Booking not found', 404));
+  }
+
+  res.status(200).json({ success: true });
+});

@@ -96,7 +96,6 @@ export const updateRoom = catchAsyncErrors(async (req, res, next) => {
 // delete room => /api/rooms/:id
 export const deleteRoom = catchAsyncErrors(async (req, res, next) => {
   const room = await Room.findByIdAndRemove(req.query.id);
-  console.log({ room });
   if (!room) {
     return next(new ErrorHandler('Room not found with this ID', 404));
   }

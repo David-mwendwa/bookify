@@ -84,8 +84,7 @@ export const getAdminBookings = () => async (dispatch) => {
   dispatch({ type: ADMIN_BOOKINGS_REQUEST });
 
   try {
-    const { origin } = absoluteUrl(req);
-    const { data } = await axios.get(`${origin}/api/admin/bookings`);
+    const { data } = await axios.get(`/api/admin/bookings`);
     dispatch({ type: ADMIN_BOOKINGS_SUCCESS, payload: data.bookings });
   } catch (error) {
     dispatch({

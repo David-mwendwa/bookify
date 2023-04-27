@@ -63,7 +63,7 @@ const AllBookings = () => {
             <>
               <Link
                 className='btn btn-primary'
-                href={`/bookings/${booking._id}`}>
+                href={`/admin/bookings/${booking._id}`}>
                 <i className='fa fa-eye'></i>
               </Link>
               <button

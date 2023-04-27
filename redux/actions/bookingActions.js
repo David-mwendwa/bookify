@@ -15,6 +15,10 @@ import {
   ADMIN_BOOKINGS_REQUEST,
   ADMIN_BOOKINGS_SUCCESS,
   ADMIN_BOOKINGS_FAIL,
+  DELETE_BOOKING_REQUEST,
+  DELETE_BOOKING_SUCCESS,
+  DELETE_BOOKING_FAIL,
+  DELETE_BOOKING_RESET,
   CLEAR_ERRORS,
 } from '../constants/bookingConstants';
 
@@ -89,6 +93,24 @@ export const getAdminBookings = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ADMIN_BOOKINGS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// get admin bookings
+export const deleteBooking = (id) => async (dispatch) => {
+  dispatch({ type: DELETE_BOOKING_REQUEST });
+
+  try {
+    const { data } = await axios.delete(`/api/admin/bookings/${id}`);
+    dispatch({ type: DELETE_BOOKING_SUCCESS, payload: data.success });
+  } catch (error) {
+    dispatch({
+      type: DELETE_BOOKING_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

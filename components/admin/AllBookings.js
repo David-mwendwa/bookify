@@ -6,14 +6,21 @@ import Loader from '../layout/Loader';
 import {
   getAdminBookings,
   clearErrors,
+  deleteBooking,
 } from '../../redux/actions/bookingActions';
 import { MDBDataTable } from 'mdbreact';
 import easyinvoice from 'easyinvoice';
 import moment from 'moment';
+import { useRouter } from 'next/router';
+import { DELETE_BOOKING_RESET } from '../../redux/constants/bookingConstants';
 
 const AllBookings = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { bookings, error, loading } = useSelector((state) => state.bookings);
+  const { isDeleted, error: deleteError } = useSelector(
+    (state) => state.booking
+  );
 
   useEffect(() => {
     dispatch(getAdminBookings());
@@ -22,7 +29,16 @@ const AllBookings = () => {
       toast.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch]);
+
+    if (deleteError) {
+      toast.error(deleteError);
+      dispatch(clearErrors());
+    }
+    if (isDeleted) {
+      router.push('/admin/rooms');
+      dispatch({ type: DELETE_BOOKING_RESET });
+    }
+  }, [dispatch, deleteError, isDeleted]);
 
   const setBookings = () => {
     const data = {
@@ -55,7 +71,9 @@ const AllBookings = () => {
                 onClick={() => downloadInvoice(booking)}>
                 <i className='fa fa-download'></i>
               </button>
-              <button className='btn btn-danger mx-2'>
+              <button
+                className='btn btn-danger mx-2'
+                onClick={() => handleDelete(booking._id)}>
                 <i className='fa fa-trash'></i>
               </button>
             </>
@@ -124,6 +142,11 @@ const AllBookings = () => {
 
     const result = await easyinvoice.createInvoice(data);
     easyinvoice.download(`invoice_${booking._id}.pdf`, result.pdf);
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure to delete the room?'))
+      dispatch(deleteBooking(id));
   };
 
   return (

@@ -89,7 +89,6 @@ const AllRooms = () => {
         <Loader />
       ) : (
         <div className='container container-fluid'>
-          {loading && <Loader />}
           <h1 className='my-5'>{`${rooms && rooms.length} Rooms`}</h1>
 
           <Link

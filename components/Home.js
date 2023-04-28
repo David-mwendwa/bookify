@@ -50,6 +50,7 @@ const Home = () => {
               No Rooms Found
             </div>
           ) : (
+            rooms &&
             rooms.map((room) => <RoomItem key={room._id} room={room} />)
           )}
         </div>

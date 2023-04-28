@@ -95,7 +95,7 @@ export const updateRoom = catchAsyncErrors(async (req, res, next) => {
 
 // delete room => /api/rooms/:id
 export const deleteRoom = catchAsyncErrors(async (req, res, next) => {
-  const room = await Room.findByIdAndRemove(req.query.id);
+  const room = await Room.findById(req.query.id);
   if (!room) {
     return next(new ErrorHandler('Room not found with this ID', 404));
   }
@@ -104,6 +104,8 @@ export const deleteRoom = catchAsyncErrors(async (req, res, next) => {
   for (let i = 0; i < room.images.length; i++) {
     await removeFromCloudinary(room.images[i].public_id);
   }
+
+  await Room.findByIdAndRemove(req.query.id);
 
   res.status(200).json({
     success: true,

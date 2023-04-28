@@ -147,3 +147,10 @@ export const resetPassword = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({ success: true, message: 'password updated!' });
 });
+
+// get all users => /api/admin/users
+export const allAdminUsers = catchAsyncErrors(async (req, res, next) => {
+  const users = await User.find({});
+
+  res.status(200).json({ success: true, users });
+});

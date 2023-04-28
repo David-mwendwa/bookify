@@ -179,3 +179,18 @@ export const updateUser = catchAsyncErrors(async (req, res, next) => {
   });
   res.status(200).json({ success: true, user });
 });
+
+// delete user - ADMIN => /api/admin/users/:id
+export const deleteUser = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.query.id);
+  if (!user) {
+    return next(new ErrorHandler('User not found', 404));
+  }
+
+  // remove avatar
+  await removeFromCloudinary(user.avatar.public_id);
+
+  await user.remove();
+
+  res.status(200).json({ success: true, user: null });
+});

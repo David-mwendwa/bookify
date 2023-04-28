@@ -86,11 +86,11 @@ export const userReducer = (state = {}, action) => {
 
     case PROFILE_UPDATE_SUCCESS:
     case UPDATE_USER_SUCCESS:
-      return { loading: false, updated: true };
+      return { loading: false, isUpdated: true };
 
     case PROFILE_UPDATE_RESET:
     case UPDATE_USER_RESET:
-      return { loading: false, updated: false };
+      return { loading: false, isUpdated: false };
 
     case PROFILE_UPDATE_FAIL:
     case UPDATE_USER_FAIL:

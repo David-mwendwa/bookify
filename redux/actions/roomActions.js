@@ -200,7 +200,7 @@ export const deleteReview = (id, roomId) => async (dispatch) => {
 
   try {
     const { data } = await axios.delete(
-      `/api/reviews?id=${id}roomId=${roomId}`
+      `/api/reviews?id=${id}&roomId=${roomId}`
     );
     dispatch({
       type: DELETE_REVIEW_SUCCESS,

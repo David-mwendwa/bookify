@@ -27,6 +27,9 @@ import {
   DELETE_ROOM_SUCCESS,
   DELETE_ROOM_FAIL,
   DELETE_ROOM_RESET,
+  GET_REVIEWS_REQUEST,
+  GET_REVIEWS_SUCCESS,
+  GET_REVIEWS_FAIL,
   CLEAR_ERRORS,
 } from '../constants/roomConstants';
 
@@ -174,6 +177,25 @@ export const checkReviewReducer = (
       return { loading: false, reviewAvailable: action.payload };
 
     case REVIEW_AVAILABILITY_FAIL:
+      return { loading: false, error: action.payload };
+
+    case CLEAR_ERRORS:
+      return { ...state, error: null };
+
+    default:
+      return state;
+  }
+};
+
+export const roomReviewsReducer = (state = { reviews: [] }, action) => {
+  switch (action.type) {
+    case GET_REVIEWS_REQUEST:
+      return { loading: true };
+
+    case GET_REVIEWS_SUCCESS:
+      return { loading: false, reviews: action.payload };
+
+    case GET_REVIEWS_FAIL:
       return { loading: false, error: action.payload };
 
     case CLEAR_ERRORS:

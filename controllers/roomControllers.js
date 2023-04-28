@@ -176,7 +176,7 @@ export const allAdminRooms = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ success: true, rooms });
 });
 
-// Get all room reviews - ADMIN => /api/admin/reviews
+// Get all room reviews - ADMIN => /api/reviews
 export const getRoomReviews = catchAsyncErrors(async (req, res, next) => {
   const room = await Room.findById(req.query.id);
 

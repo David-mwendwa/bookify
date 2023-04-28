@@ -8,6 +8,7 @@ import {
   newRoomReducer,
   roomDetailsReducer,
   roomReducer,
+  roomReviewsReducer,
 } from './reducers/roomReducers';
 import {
   allUsersReducer,
@@ -43,6 +44,7 @@ const reducers = combineReducers({
   checkReview: checkReviewReducer,
   newRoom: newRoomReducer,
   room: roomReducer,
+  roomReviews: roomReviewsReducer,
 });
 
 const bindMiddlware = (middlware) => {

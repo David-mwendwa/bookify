@@ -182,3 +182,28 @@ export const getRoomReviews = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({ success: true, reviews: room.reviews });
 });
+
+// Delete room reviews - ADMIN => /api/reviews/:id
+export const deleteReview = catchAsyncErrors(async (req, res, next) => {
+  const room = await Room.findById(req.query.roomId);
+
+  const reviews = room.reviews.filter(
+    (review) => review.id.toString() === req.query.roomId.toString()
+  );
+
+  const numOfReviews = reviews.length;
+  const ratings =
+    room.reviews.reduce((acc, item) => item.rating + acc, 0) / reviews.length;
+
+  await Room.findByIdAndUpdate(
+    req.query.roomId,
+    {
+      reviews,
+      ratings,
+      numOfReviews,
+    },
+    { new: true, runValidators: true, useFindAndModify: false }
+  );
+
+  res.status(200).json({ success: true });
+});

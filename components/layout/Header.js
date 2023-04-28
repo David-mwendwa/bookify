@@ -66,6 +66,9 @@ const Header = () => {
                     <Link href='/admin/users' className='dropdown-item'>
                       Users
                     </Link>
+                    <Link href='/admin/reviews' className='dropdown-item'>
+                      Reviews
+                    </Link>
                     <hr />
                   </>
                 )}

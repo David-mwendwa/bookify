@@ -25,6 +25,10 @@ import {
   UPDATE_USER_SUCCESS,
   UPDATE_USER_FAIL,
   UPDATE_USER_RESET,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAIL,
+  DELETE_USER_RESET,
   CLEAR_ERRORS,
 } from '../constants/userConstants';
 
@@ -82,6 +86,7 @@ export const userReducer = (state = {}, action) => {
   switch (action.type) {
     case PROFILE_UPDATE_REQUEST:
     case UPDATE_USER_REQUEST:
+    case DELETE_USER_REQUEST:
       return { loading: true };
 
     case PROFILE_UPDATE_SUCCESS:
@@ -92,8 +97,15 @@ export const userReducer = (state = {}, action) => {
     case UPDATE_USER_RESET:
       return { loading: false, isUpdated: false };
 
+    case DELETE_USER_RESET:
+      return { loading: false, isDeleted: false };
+
+    case DELETE_USER_SUCCESS:
+      return { loading: false, isDeleted: false };
+
     case PROFILE_UPDATE_FAIL:
     case UPDATE_USER_FAIL:
+    case DELETE_USER_FAIL:
       return { loading: false, error: action.payload };
 
     case CLEAR_ERRORS:

@@ -3,17 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { MDBDataTable } from 'mdbreact';
-import moment from 'moment';
 import { useRouter } from 'next/router';
 import Loader from '../layout/Loader';
-import { DELETE_ROOM_RESET } from '../../redux/constants/roomConstants';
-import { clearErrors, getAdminUsers } from '../../redux/actions/userActions';
+import {
+  clearErrors,
+  deletUser,
+  getAdminUsers,
+} from '../../redux/actions/userActions';
+import { DELETE_USER_RESET } from '../../redux/constants/userConstants';
 
 const AllUsers = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { users, loading, error } = useSelector((state) => state.allUsers);
-  // const { isDeleted, error: deleteError } = useSelector((state) => state.user);
+  const { isDeleted, error: deleteError } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getAdminUsers());
@@ -23,16 +26,16 @@ const AllUsers = () => {
       dispatch(clearErrors());
     }
 
-    // if (isDeleted) {
-    //   toast.error(deleteError);
-    //   dispatch(clearErrors());
-    // }
+    if (deleteError) {
+      toast.error(deleteError);
+      dispatch(clearErrors());
+    }
 
-    // if (isDeleted) {
-    //   router.push('/admin/users');
-    //   dispatch({ type: DELETE_ROOM_RESET });
-    // }
-  }, [dispatch]);
+    if (isDeleted) {
+      router.push('/admin/users');
+      dispatch({ type: DELETE_USER_RESET });
+    }
+  }, [dispatch, isDeleted, deleteError]);
 
   const setUsers = () => {
     const data = {
@@ -73,11 +76,11 @@ const AllUsers = () => {
     return data;
   };
 
-  // const handleDelete = (id) => {
-  //   if (window.confirm('Are you sure to delete the room?')) {
-  //     dispatch(deleteRoom(id));
-  //   }
-  // };
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure to delete this user?')) {
+      dispatch(deletUser(id));
+    }
+  };
 
   return (
     <>

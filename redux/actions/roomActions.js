@@ -28,6 +28,9 @@ import {
   GET_REVIEWS_REQUEST,
   GET_REVIEWS_SUCCESS,
   GET_REVIEWS_FAIL,
+  DELETE_REVIEW_REQUEST,
+  DELETE_REVIEW_SUCCESS,
+  DELETE_REVIEW_FAIL,
   CLEAR_ERRORS,
 } from '../constants/roomConstants';
 
@@ -187,6 +190,25 @@ export const getRoomReviews = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_REVIEWS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const deleteReview = (id, roomId) => async (dispatch) => {
+  dispatch({ type: DELETE_REVIEW_REQUEST });
+
+  try {
+    const { data } = await axios.delete(
+      `/api/reviews?id=${id}roomId=${roomId}`
+    );
+    dispatch({
+      type: DELETE_REVIEW_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_REVIEW_FAIL,
       payload: error.response.data.message,
     });
   }

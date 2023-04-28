@@ -15,6 +15,9 @@ import {
   PASSWORD_RESET_REQUEST,
   PASSWORD_RESET_SUCCESS,
   PASSWORD_RESET_FAIL,
+  ADMIN_USERS_REQUEST,
+  ADMIN_USERS_SUCCESS,
+  ADMIN_USERS_FAIL,
   CLEAR_ERRORS,
 } from '../constants/userConstants';
 
@@ -105,6 +108,25 @@ export const forgotPasswordReducer = (state = {}, action) => {
 
     case PASSWORD_FORGOT_FAIL:
     case PASSWORD_RESET_FAIL:
+      return { loading: false, error: action.payload };
+
+    case CLEAR_ERRORS:
+      return { ...state, error: null };
+
+    default:
+      return state;
+  }
+};
+
+export const allUsersReducer = (state = { users: [] }, action) => {
+  switch (action.type) {
+    case ADMIN_USERS_REQUEST:
+      return { loading: true };
+
+    case ADMIN_USERS_SUCCESS:
+      return { loading: false, users: action.payload };
+
+    case ADMIN_USERS_FAIL:
       return { loading: false, error: action.payload };
 
     case CLEAR_ERRORS:

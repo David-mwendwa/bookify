@@ -10,6 +10,7 @@ import {
   roomReducer,
 } from './reducers/roomReducers';
 import {
+  allUsersReducer,
   authReducer,
   forgotPasswordReducer,
   loadedUserReducer,
@@ -28,6 +29,7 @@ const reducers = combineReducers({
   roomDetails: roomDetailsReducer,
   auth: authReducer,
   user: userReducer,
+  allUsers: allUsersReducer,
   loadedUser: loadedUserReducer,
   forgotPassword: forgotPasswordReducer,
   checkBooking: checkBookingReducer,

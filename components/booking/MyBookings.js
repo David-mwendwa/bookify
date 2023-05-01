@@ -64,7 +64,7 @@ const MyBookings = () => {
         //  "template": fs.readFileSync('template.html', 'base64') // Must be base64 encoded html
       },
       images: {
-        logo: 'https://res.cloudinary.com/techdave/image/upload/v1681210002/bookify/bookit_logo_cz1fkr.png',
+        logo: 'https://res.cloudinary.com/techdave/image/upload/v1682923088/bookify/bookify_logo_kgpgx1.png',
       },
       // Your own data
       sender: {

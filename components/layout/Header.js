@@ -27,7 +27,7 @@ const Header = () => {
             <Link href='/'>
               <img
                 style={{ cursor: 'pointer' }}
-                src='./images/bookit_logo.png'
+                src='../../images/bookify_logo.png'
                 alt='Bookify'
               />
             </Link>
